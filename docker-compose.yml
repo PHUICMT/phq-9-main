@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'P@ssw0rd'
+      MYSQL_ROOT_PASSWORD: 'P@ssw0rd'
+    networks:
+      - phq-9-network
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+
+  server:
+    container_name: phq-9-backend
+    image: "phuicmt/phq-9-backend"
+    networks:
+        - phq-9-network
+    ports:
+      - "5000:5000"
+
+  web:
+    container_name: phq-9-fontend
+    image: "phuicmt/phq-9-fontend"
+    restart: always
+    networks:
+      - phq-9-network
+    ports:
+      - "80:3000"
+    expose:
+      - '80'
+    depends_on: 
+      - server
+      - db
+
+volumes:
+  my-db:
+
+networks:
+  phq-9-network:
+    external: true
