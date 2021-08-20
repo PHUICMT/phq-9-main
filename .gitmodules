@@ -1,0 +1,6 @@
+[submodule "phq-9-backend"]
+	path = phq-9-backend
+	url = https://github.com/PHUICMT/phq-9-backend.git
+[submodule "phq-9-web"]
+	path = phq-9-web
+	url = https://github.com/PHUICMT/phq-9-web.git
