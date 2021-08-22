@@ -3,9 +3,12 @@ version: "3.9"
 services:
   db:
     image: mysql:latest
+    cap_add:
+      - SYS_NICE
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
+      TZ: "Asia/Bangkok"
+      MYSQL_DATABASE: 'phq_9_db'
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'P@ssw0rd'
       MYSQL_ROOT_PASSWORD: 'P@ssw0rd'
