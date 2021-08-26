@@ -1,9 +1,9 @@
-CREATE TABLE `questionnaire` (
+CREATE TABLE `Questionnaire` (
   `id` varchar(255) PRIMARY KEY,
   `created_at` timestamp
 );
 
-CREATE TABLE `videos` (
+CREATE TABLE `Videos` (
   `id` varchar(255),
   `video_name` varchar(255),
   `questionnaire_id` varchar(255),
@@ -11,12 +11,14 @@ CREATE TABLE `videos` (
   PRIMARY KEY (`id`, `video_name`)
 );
 
-CREATE TABLE `result` (
+CREATE TABLE `Result` (
   `questionnaire_id` varchar(255),
-  `emotion` json
+  `emotion` json,
+  `answer` json,
+  `events` json
 );
 
-ALTER TABLE `videos` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaire` (`id`);
+ALTER TABLE `Videos` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `Questionnaire` (`id`);
 
-ALTER TABLE `result` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaire` (`id`);
+ALTER TABLE `Result` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `Questionnaire` (`id`);
 
