@@ -39,44 +39,16 @@ services:
     restart: always
     networks:
       - phq-9-network
+    ports:
+      - "80:3000"
+    expose:
+      - "80"
     depends_on:
       - server
       - db
-    environment:
-      VIRTUAL_HOST: "103.74.254.146"
-      LETSENCRYPT_HOST: "103.74.254.146"
-
-  nginx-proxy:
-    image: jwilder/nginx-proxy:alpine
-    container_name: nginx-proxy
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - certs:/etc/nginx/certs:ro
-      - dhparam:/etc/nginx/dhparam
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: nginx-proxy-lets
-    volumes_from:
-      - nginx-proxy
-    volumes:
-      - certs:/etc/nginx/certs:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    depends_on:
-      - nginx-proxy
 
 volumes:
   my-db:
-  vhost:
-  html:
-  certs:
-  dhparam:
 
 networks:
   phq-9-network:
