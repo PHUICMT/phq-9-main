@@ -8,16 +8,16 @@ services:
     restart: always
     environment:
       TZ: "Asia/Bangkok"
-      MYSQL_DATABASE: 'phq_9_db'
-      MYSQL_USER: 'admin'
-      MYSQL_PASSWORD: 'P@ssw0rd'
-      MYSQL_ROOT_PASSWORD: 'P@ssw0rd'
+      MYSQL_DATABASE: "phq_9_db"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "P@ssw0rd"
+      MYSQL_ROOT_PASSWORD: "P@ssw0rd"
     networks:
       - phq-9-network
     ports:
-      - '3306:3306'
+      - "3306:3306"
     expose:
-      - '3306'
+      - "3306"
     volumes:
       - my-db:/var/lib/mysql
       - ./db/phq-9-db.sql:/docker-entrypoint-initdb.d/phq-9-db.sql
@@ -27,10 +27,10 @@ services:
     image: "phuicmt/phq-9-backend"
     restart: always
     networks:
-        - phq-9-network
+      - phq-9-network
     ports:
       - "5000:5000"
-    depends_on: 
+    depends_on:
       - db
 
   web:
@@ -39,13 +39,37 @@ services:
     restart: always
     networks:
       - phq-9-network
-    ports:
-      - "80:3000"
-    expose:
-      - '80'
-    depends_on: 
+    depends_on:
       - server
       - db
+    environment:
+      VIRTUAL_HOST: "103.74.254.146"
+      LETSENCRYPT_HOST: "103.74.254.146"
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - dhparam:/etc/nginx/dhparam
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-lets
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
 
 volumes:
   my-db:
