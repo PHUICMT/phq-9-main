@@ -73,6 +73,10 @@ services:
 
 volumes:
   my-db:
+  vhost:
+  html:
+  certs:
+  dhparam:
 
 networks:
   phq-9-network:
