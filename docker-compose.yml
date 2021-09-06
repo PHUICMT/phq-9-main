@@ -48,6 +48,7 @@ services:
       - db
     environment:
       VIRTUAL_HOST: phu-host-camp.page
+      LETSENCRYPT_HOST: phu-host-camp.page
 
   nginx-proxy:
     image: jwilder/nginx-proxy:alpine
