@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.1"
 
 services:
   db:
@@ -32,6 +32,9 @@ services:
       - "5000:5000"
     depends_on:
       - db
+    environment:
+      VIRTUAL_HOST: phu-host-camp.page
+      LETSENCRYPT_HOST: phu-host-camp.page
 
   web:
     container_name: phq-9-fontend
@@ -40,15 +43,51 @@ services:
     networks:
       - phq-9-network
     ports:
-      - "80:3000"
+      - "3000:3000"
     expose:
       - "80"
     depends_on:
       - server
       - db
+    environment:
+      VIRTUAL_HOST: phu-host-camp.page
+      LETSENCRYPT_HOST: phu-host-camp.page
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - dhparam:/etc/nginx/dhparam
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - phq-9-network
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-lets
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
+    networks:
+      - phq-9-network
 
 volumes:
   my-db:
+  html:
+  vhost:
+  certs:
+  dhparam:
 
 networks:
   phq-9-network:
