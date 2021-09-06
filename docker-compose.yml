@@ -32,9 +32,6 @@ services:
       - "5000:5000"
     depends_on:
       - db
-    environment:
-      VIRTUAL_HOST: phu-host-camp.page
-      LETSENCRYPT_HOST: phu-host-camp.page
 
   web:
     container_name: phq-9-fontend
@@ -45,13 +42,12 @@ services:
     ports:
       - "3000:3000"
     expose:
-      - "80"
+      - "3000"
     depends_on:
       - server
       - db
     environment:
       VIRTUAL_HOST: phu-host-camp.page
-      LETSENCRYPT_HOST: phu-host-camp.page
 
   nginx-proxy:
     image: jwilder/nginx-proxy:alpine
@@ -60,6 +56,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    links:
+      - web
     volumes:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
