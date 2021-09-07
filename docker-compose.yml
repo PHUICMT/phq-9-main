@@ -70,9 +70,9 @@ services:
     networks:
       - phq-9-network
     ports:
-      - "3000:3000"
+      - "80:3000"
     expose:
-      - "3000"
+      - "80"
     depends_on:
       - server
       - db
