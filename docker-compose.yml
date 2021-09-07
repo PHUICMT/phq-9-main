@@ -40,54 +40,15 @@ services:
     networks:
       - phq-9-network
     ports:
-      - "3000:3000"
+      - "80:3000"
     expose:
-      - "3000"
+      - "80"
     depends_on:
       - server
       - db
-    environment:
-      DANGEROUSLY_DISABLE_HOST_CHECK: "true"
-      VIRTUAL_HOST: phu-host-camp.page
-      LETSENCRYPT_HOST: phu-host-camp.page
-
-  nginx-proxy:
-    image: jwilder/nginx-proxy:alpine
-    container_name: nginx-proxy
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    links:
-      - web
-    volumes:
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - certs:/etc/nginx/certs:ro
-      - dhparam:/etc/nginx/dhparam
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - phq-9-network
-
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: nginx-proxy-lets
-    volumes_from:
-      - nginx-proxy
-    volumes:
-      - certs:/etc/nginx/certs:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    depends_on:
-      - nginx-proxy
-    networks:
-      - phq-9-network
 
 volumes:
   my-db:
-  html:
-  vhost:
-  certs:
-  dhparam:
 
 networks:
   phq-9-network:
