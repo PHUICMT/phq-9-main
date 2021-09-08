@@ -52,7 +52,7 @@ services:
       LETSENCRYPT_HOST: phq9-thesis.page
 
   nginx-proxy:
-    image: jwilder/nginx-proxy:alpine
+    image: bbtsoftwareag/nginx-proxy-unrestricted-requestsize
     container_name: nginx-proxy
     restart: always
     ports:
