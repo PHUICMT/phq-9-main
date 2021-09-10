@@ -25,6 +25,8 @@ services:
       - "9000:9000"
     expose:
       - "9000"
+    environment:
+      VIRTUAL_HOST: phq9-thesis.page
 
   db:
     image: mysql:latest
