@@ -26,8 +26,8 @@ services:
     expose:
       - "9000"
     environment:
-      VIRTUAL_HOST: phq9-thesis.page
-
+      VIRTUAL_HOST: portainer.phq9-thesis.page
+      VIRTUAL_PORT: 9000
   db:
     image: mysql:latest
     cap_add:
