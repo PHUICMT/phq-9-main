@@ -72,10 +72,6 @@ services:
     depends_on:
       - server
       - db
-    environment:
-      DANGEROUSLY_DISABLE_HOST_CHECK: "true"
-      VIRTUAL_HOST: phq9-thesis.page
-      LETSENCRYPT_HOST: phq9-thesis.page
 
   nginx-proxy:
     image: bbtsoftwareag/nginx-proxy-unrestricted-requestsize:alpine
