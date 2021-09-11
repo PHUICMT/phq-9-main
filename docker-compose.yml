@@ -59,8 +59,8 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
-      VIRTUAL_HOST: portainer.phq9-thesis.page
-      LETSENCRYPT_HOST: portainer.phq9-thesis.page
+      VIRTUAL_HOST: db.phq9-thesis.page
+      LETSENCRYPT_HOST: db.phq9-thesis.page
       VIRTUAL_PORT: 8081
     restart: always
     ports:
