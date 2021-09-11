@@ -46,6 +46,21 @@ services:
       - my-db:/var/lib/mysql
       - ./db/phq-9-db.sql:/docker-entrypoint-initdb.d/phq-9-db.sql
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+    expose:
+      - "8081"
+
   server:
     container_name: phq-9-backend
     image: "phuicmt/phq-9-backend"
