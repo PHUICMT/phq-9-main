@@ -1,0 +1,46 @@
+[BEGIN]
+var items_checked = [False, False, False, False, False, False, False, False, False]
+var items_behavior = ["", "", "", "", "", "", "", "", ""]
+var items_score = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
+USERINPUT webcam_toggle_allows
+USERINPUT screen_toggle_allows
+If webcam_toggle_allows == True Then
+    Record Webcam
+EndIf
+If screen_toggle_allows == True Then
+    Record Screen
+EndIf
+var uuid = GenerateUUID()
+var row_of_uuid = SaveUuid(uuid)
+Function SaveUuid(uuid)
+    var row_of_uuid = SaveToDataBase(uuid)
+    Function SaveToDataBase(uuid)
+        var time_stamp = Time.now()
+        do query "INSERT INTO Questionnaire (id, created_at) VALUES (${uuid},${time_stamp})"
+        return do query "SELECT COUNT(*) FROM Questionnaire"
+    EndFunction
+    return row_of_uuid
+EndFunction
+Function InputUserScores (item_no,event)
+    var is_changed = Null
+    If User selected a score on ${item_no}
+        items_score[item_no] = USERINPUT score
+        If is_changed == Null
+            Foreach i in items_score.Length()
+                If !items_checked[i] && !items_behavior[i] == "Skip" Then
+                    items_behavior[i] = "Skip"
+                EndIf
+            EndForEach
+            items_checked[item_no] = True
+        EndIf
+        If items_checked[item_no] == True Then
+            If !items_behavior[i] == "Changed" Then
+                    items_behavior[i] += "Changed"
+            EndIf
+        Else
+            items_checked[item_no] = True
+        EndIf  
+
+
+
+[END]
