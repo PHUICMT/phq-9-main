@@ -83,7 +83,7 @@ services:
       LETSENCRYPT_HOST: phq9-thesis.page
 
   nginx-proxy:
-    image: phuicmt/docker-nginx-proxy-unrestricted-requestsize-set-timeout:alpine
+    image: jwilder/nginx-proxy:alpine
     container_name: nginx-proxy
     restart: always
     ports:
@@ -97,6 +97,7 @@ services:
       - certs:/etc/nginx/certs:ro
       - dhparam:/etc/nginx/dhparam
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - phq-9-network
 
