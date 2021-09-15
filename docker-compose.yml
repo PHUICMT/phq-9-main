@@ -49,26 +49,7 @@ services:
     volumes:
       - my-db:/var/lib/mysql
       - ./db/phq-9-db.sql:/docker-entrypoint-initdb.d/phq-9-db.sql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    links:
-      - db
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-      VIRTUAL_HOST: db.phq9-thesis.page
-      LETSENCRYPT_HOST: db.phq9-thesis.page
-      VIRTUAL_PORT: 8081
-    restart: always
-    ports:
-      - 8081:8081
-    expose:
-      - "8081"
-    networks:
-      - phq-9-network
+    command: [--wait_timeout=28800]
 
   server:
     container_name: phq-9-backend
@@ -102,7 +83,7 @@ services:
       LETSENCRYPT_HOST: phq9-thesis.page
 
   nginx-proxy:
-    image: bbtsoftwareag/nginx-proxy-unrestricted-requestsize:alpine
+    image: phuicmt/docker-nginx-proxy-unrestricted-requestsize-set-timeout:alpine
     container_name: nginx-proxy
     restart: always
     ports:
