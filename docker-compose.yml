@@ -1,4 +1,4 @@
-version: "3.9"
+version: "2"
 
 services:
   portainer_agent:
@@ -45,6 +45,7 @@ services:
     volumes:
       - my-db:/var/lib/mysql
       - ./db/phq-9-db.sql:/docker-entrypoint-initdb.d/phq-9-db.sql
+    command: [--wait_timeout=28800]
 
   server:
     container_name: phq-9-backend
@@ -67,12 +68,18 @@ services:
       - phq-9-network
     ports:
       - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - server
       - db
+    environment:
+      DANGEROUSLY_DISABLE_HOST_CHECK: "true"
+      VIRTUAL_HOST: phq9-thesis.page
+      LETSENCRYPT_HOST: phq9-thesis.page
 
   nginx-proxy:
-    image: bbtsoftwareag/nginx-proxy-unrestricted-requestsize:alpine
+    image: jwilder/nginx-proxy:alpine
     container_name: nginx-proxy
     restart: always
     ports:
@@ -86,6 +93,20 @@ services:
       - certs:/etc/nginx/certs:ro
       - dhparam:/etc/nginx/dhparam
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - phq-9-network
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-lets
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
     networks:
       - phq-9-network
 
