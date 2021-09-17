@@ -29,6 +29,7 @@ services:
       VIRTUAL_HOST: portainer.phq9-thesis.page
       LETSENCRYPT_HOST: portainer.phq9-thesis.page
       VIRTUAL_PORT: 9000
+
   db:
     image: mysql:latest
     cap_add:
@@ -113,6 +114,16 @@ services:
       - nginx-proxy
     networks:
       - phq-9-network
+
+  smtp:
+    container_name: smtp
+    image: bytemark/smtp
+    restart: always
+    environment:
+      RELAY_HOST: smtp.gmail.com
+      RELAY_PORT: 587
+      RELAY_USERNAME: phq.9.thesis@gmail.com
+      RELAY_PASSWORD: 4847_5523
 
 volumes:
   my-db:
