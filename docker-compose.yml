@@ -54,8 +54,8 @@ services:
       VIRTUAL_HOST: phq9-thesis.page
       LETSENCRYPT_HOST: phq9-thesis.page
 
-  mail:
-    container_name: mail
+  smtp:
+    container_name: smtp
     image: bytemark/smtp
     restart: always
     environment:
