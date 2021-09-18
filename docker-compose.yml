@@ -91,7 +91,7 @@ services:
       RELAY_HOST: smtp.gmail.com
       RELAY_PORT: 587
       RELAY_USERNAME: phq.9.thesis@gmail.com
-      RELAY_PASSWORD: 4847_5523
+      RELAY_PASSWORD: "4847_5523"
     networks:
       - phq-9-network
 
