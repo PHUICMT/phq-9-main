@@ -110,6 +110,7 @@ services:
       - certs:/etc/nginx/certs:ro
       - dhparam:/etc/nginx/dhparam
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - phq-9-network
 
