@@ -48,7 +48,7 @@ services:
     expose:
       - "3306"
     volumes:
-      - my-db:/var/lib/mysql
+      - my-db:/var/lib/phuicmtsql
       - ./db/phq-9-db.sql:/docker-entrypoint-initdb.d/phq-9-db.sql
     command: [--wait_timeout=28800]
 
@@ -100,7 +100,7 @@ services:
     container_name: nginx-proxy
     restart: always
     ports:
-      - "80:80"
+      - "1111:1111"
       - "8443:8443"
     links:
       - web
