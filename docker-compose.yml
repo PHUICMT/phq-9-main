@@ -26,8 +26,8 @@ services:
     expose:
       - "9000"
     environment:
-      VIRTUAL_HOST: portainer.phq9-thesis.page
-      LETSENCRYPT_HOST: portainer.phq9-thesis.page
+      VIRTUAL_HOST: alex1.su.ac.th
+      LETSENCRYPT_HOST: alex1.su.ac.th
       VIRTUAL_PORT: 9000
 
   db:
@@ -80,8 +80,8 @@ services:
       - db
     environment:
       DANGEROUSLY_DISABLE_HOST_CHECK: "true"
-      VIRTUAL_HOST: phq9-thesis.page
-      LETSENCRYPT_HOST: phq9-thesis.page
+      VIRTUAL_HOST: alex1.su.ac.th
+      LETSENCRYPT_HOST: alex1.su.ac.th
 
   smtp:
     container_name: smtp
@@ -101,7 +101,7 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "443:443"
+      - "8443:8443"
     links:
       - web
     volumes:
