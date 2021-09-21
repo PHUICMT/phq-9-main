@@ -107,7 +107,7 @@ services:
     volumes:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
-      - ./ssl:/etc/nginx/certs
+      - ./nginx/certs:/etc/nginx/certs:ro
       - dhparam:/etc/nginx/dhparam
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/conf.d:/etc/nginx/conf.d
