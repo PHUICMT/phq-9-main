@@ -96,7 +96,7 @@ services:
       - phq-9-network
 
   nginx-proxy:
-    image: bbtsoftwareag/nginx-proxy-unrestricted-requestsize:alpine
+    image: jwilder/nginx-proxy:alpine
     container_name: nginx-proxy
     restart: always
     ports:
@@ -107,7 +107,7 @@ services:
     volumes:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
-      - certs:/etc/nginx/certs:ro
+      - ./ssl:/etc/nginx/certs
       - dhparam:/etc/nginx/dhparam
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/conf.d:/etc/nginx/conf.d
