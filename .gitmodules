@@ -4,3 +4,6 @@
 [submodule "phq-9-web"]
 	path = phq-9-web
 	url = https://github.com/PHUICMT/phq-9-web.git
+[submodule "phq-9-mailsender"]
+	path = phq-9-mailsender
+	url = https://github.com/PHUICMT/phq-9-mailsender.git
