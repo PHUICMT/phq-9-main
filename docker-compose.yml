@@ -131,18 +131,18 @@ services:
     networks:
       - phq-9-network
 
-  # letsencrypt:
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   container_name: nginx-proxy-lets
-  #   volumes_from:
-  #     - nginx-proxy
-  #   volumes:
-  #     - certs:/etc/nginx/certs:rw
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   depends_on:
-  #     - nginx-proxy
-  #   networks:
-  #     - phq-9-network
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-lets
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
+    networks:
+      - phq-9-network
 
 volumes:
   my-db:
