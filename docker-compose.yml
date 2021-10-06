@@ -60,6 +60,8 @@ services:
       - phq-9-network
     ports:
       - "5000:5000"
+    expose:
+      - "5000"
     depends_on:
       - db
     volumes:
@@ -117,10 +119,6 @@ services:
       - "443:443"
     links:
       - web
-    depends_on:
-      - web
-      - mailsender
-      - server
     volumes:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
@@ -128,6 +126,18 @@ services:
       - dhparam:/etc/nginx/dhparam
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - phq-9-network
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: "rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER="admin"
+      - RABBITMQ_DEFAULT_PASS="P@ssW0rd"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - phq-9-network
 
