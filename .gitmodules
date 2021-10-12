@@ -7,3 +7,6 @@
 [submodule "phq-9-mailsender"]
 	path = phq-9-mailsender
 	url = https://github.com/PHUICMT/phq-9-mailsender.git
+[submodule "phq-9-rabbitmq"]
+	path = phq-9-rabbitmq
+	url = https://github.com/PHUICMT/phq-9-rabbitmq
