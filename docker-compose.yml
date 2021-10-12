@@ -64,6 +64,7 @@ services:
       - "5000"
     depends_on:
       - db
+      - rabbitmq
     volumes:
       - video_storage:/server/app/video_storage
 
@@ -97,6 +98,21 @@ services:
       - server
       - db
       - web
+      - rabbitmq
+
+  rabbitmq-reader:
+    container_name: phq-9-rabbitmq
+    image: "phuicmt/phq-9-rabbitmq"
+    restart: always
+    networks:
+      - phq-9-network
+    ports:
+      - "5002:5002"
+    depends_on:
+      - server
+      - db
+      - web
+      - rabbitmq
 
   smtp:
     container_name: smtp
@@ -132,12 +148,17 @@ services:
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
     container_name: "rabbitmq"
+    restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER="admin"
-      - RABBITMQ_DEFAULT_PASS="P@ssW0rd"
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - 15672:15672
+      - 15671:15671
+      - 5672:5672
+    expose:
+      - "15672"
+      - "5672"
     networks:
       - phq-9-network
 
