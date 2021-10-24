@@ -50,7 +50,9 @@ services:
     volumes:
       - my-db:/var/lib/mysql
       - ./db/phq-9-db.sql:/docker-entrypoint-initdb.d/phq-9-db.sql
-    command: [--wait_timeout=31536000--interactive_timeout=31536000]
+    command: >
+      --wait_timeout=31536000
+      --interactive_timeout=31536000
 
   server:
     container_name: phq-9-backend
