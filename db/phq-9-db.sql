@@ -4,11 +4,10 @@ CREATE TABLE `Questionnaire` (
 );
 
 CREATE TABLE `Videos` (
-  `id` varchar(255),
   `video_name` varchar(255),
   `questionnaire_id` varchar(255),
   `video_type_is_webcam` boolean,
-  PRIMARY KEY (`id`, `video_name`)
+  PRIMARY KEY (`video_name`, `questionnaire_id`)
 );
 
 CREATE TABLE `Result` (
