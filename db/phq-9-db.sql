@@ -18,7 +18,7 @@ CREATE TABLE `Result` (
   `events` json
 );
 
-ALTER TABLE `Videos` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `Questionnaire` (`id`);
+-- ALTER TABLE `Videos` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `Questionnaire` (`id`);
 
-ALTER TABLE `Result` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `Questionnaire` (`id`);
+-- ALTER TABLE `Result` ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `Questionnaire` (`id`);
 
