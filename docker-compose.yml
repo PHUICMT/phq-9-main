@@ -85,8 +85,8 @@ services:
       - db
     environment:
       DANGEROUSLY_DISABLE_HOST_CHECK: "true"
-      VIRTUAL_HOST: www.phq9-thesis.page
-      LETSENCRYPT_HOST: www.phq9-thesis.page
+      VIRTUAL_HOST: phq9-thesis.page
+      LETSENCRYPT_HOST: phq9-thesis.page
 
   mailsender:
     container_name: phq-9-mailsender
