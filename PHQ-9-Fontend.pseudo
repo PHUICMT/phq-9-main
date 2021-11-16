@@ -1,46 +1,68 @@
 [BEGIN]
-var items_checked = [False, False, False, False, False, False, False, False, False]
-var items_behavior = ["", "", "", "", "", "", "", "", ""]
-var items_score = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
-USERINPUT webcam_toggle_allows
-USERINPUT screen_toggle_allows
-If webcam_toggle_allows == True Then
-    Record Webcam
-EndIf
+Input : Video<Webcam>, 
+        Video<Screen>,
+        List<ScoredPoint>,
+        List<List<Behavior>>,
+        List<ClickTimeStamp>,
+        List<TimePerIteration>,
+        String<Result>,
+        String<Email>
+
+Record(Video<Webcam>)
 If screen_toggle_allows == True Then
-    Record Screen
+    Record(Video<Screen>)
 EndIf
+
 var uuid = GenerateUUID()
-var row_of_uuid = SaveUuid(uuid)
+
 Function SaveUuid(uuid)
     var row_of_uuid = SaveToDataBase(uuid)
     Function SaveToDataBase(uuid)
-        var time_stamp = Time.now()
-        do query "INSERT INTO Questionnaire (id, created_at) VALUES (${uuid},${time_stamp})"
-        return do query "SELECT COUNT(*) FROM Questionnaire"
+        do query(INSERT uuid AND Time.now() to TABLE)
+        return do query(GET COUNT OF ITEM FROM Questionnaire TABLE)
     EndFunction
     return row_of_uuid
 EndFunction
-Function InputUserScores (item_no,event)
-    var is_changed = Null
-    If User selected a score on ${item_no}
-        items_score[item_no] = USERINPUT score
-        If is_changed == Null
-            Foreach i in items_score.Length()
-                If !items_checked[i] && !items_behavior[i] == "Skip" Then
-                    items_behavior[i] = "Skip"
-                EndIf
-            EndForEach
-            items_checked[item_no] = True
-        EndIf
-        If items_checked[item_no] == True Then
-            If !items_behavior[i] == "Changed" Then
-                    items_behavior[i] += "Changed"
+
+do UserDoQuestionnaire() 
+Function UserDoQuestionnaire() 
+    SaveResultToDataBase(List<ScoredPoint>, List<List<Behavior>>)
+    USER INPUT String<Email>
+    return {
+        List<ScoredPoint>,
+        List<List<Behavior>>,
+        List<ClickTimeStamp>,
+        List<TimePerIteration>,
+        String<Result>
+    }
+EndFunction
+
+do StopRecord()
+Function StopRecord()
+    If (Webcam is recording) Then
+        Stop(Webcam)
+    EndIf
+    If (Screen is recording) Then
+        Stop(Screen)
+    EndIf
+
+    Function Stop(module)
+        module.stop()
+        SaveVideoToDatabase(module)
+
+        Function SaveVideoToDatabase(module)
+            do query(INSERT module to TABLE)
+            If (module is Webcam) Then
+                var emotes = List<Emote>
+                emotes = Process(Webcam)
+                SaveEmotesToDatabase(emotes)
             EndIf
-        Else
-            items_checked[item_no] = True
-        EndIf  
+        EndFunction
+    EndFunction
+EndFunction
 
-
-
+Function SendEmail()
+    var email_form = CreateEmailForm(List<List<Behavior>>, List<ClickTimeStamp>, List<TimePerIteration>, String<Result>, List<Emote>)
+    do MailService(String<Email>)
+EndFunction
 [END]
