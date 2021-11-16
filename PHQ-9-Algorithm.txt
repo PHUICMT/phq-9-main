@@ -1,0 +1,68 @@
+[BEGIN]
+Input : Video<Webcam>, 
+        Video<Screen>,
+        List<ScoredPoint>,
+        List<List<Behavior>>,
+        List<ClickTimeStamp>,
+        List<TimePerIteration>,
+        String<Result>,
+        String<Email>
+
+Record(Video<Webcam>)
+If screen_toggle_allows == True Then
+    Record(Video<Screen>)
+EndIf
+
+var uuid = GenerateUUID()
+
+Function SaveUuid(uuid)
+    var row_of_uuid = SaveToDataBase(uuid)
+    Function SaveToDataBase(uuid)
+        do query(INSERT uuid AND Time.now() to TABLE)
+        return do query(GET COUNT OF ITEM FROM Questionnaire TABLE)
+    EndFunction
+    return row_of_uuid
+EndFunction
+
+do UserDoQuestionnaire() 
+Function UserDoQuestionnaire() 
+    SaveResultToDataBase(List<ScoredPoint>, List<List<Behavior>>)
+    USER INPUT String<Email>
+    return {
+        List<ScoredPoint>,
+        List<List<Behavior>>,
+        List<ClickTimeStamp>,
+        List<TimePerIteration>,
+        String<Result>
+    }
+EndFunction
+
+do StopRecord()
+Function StopRecord()
+    If (Webcam is recording) Then
+        Stop(Webcam)
+    EndIf
+    If (Screen is recording) Then
+        Stop(Screen)
+    EndIf
+
+    Function Stop(module)
+        module.stop()
+        SaveVideoToDatabase(module)
+
+        Function SaveVideoToDatabase(module)
+            do query(INSERT module to TABLE)
+            If (module is Webcam) Then
+                var emotes = List<Emote>
+                emotes = Process(Webcam)
+                SaveEmotesToDatabase(emotes)
+            EndIf
+        EndFunction
+    EndFunction
+EndFunction
+
+Function SendEmail()
+    var email_form = CreateEmailForm(List<List<Behavior>>, List<ClickTimeStamp>, List<TimePerIteration>, String<Result>, List<Emote>)
+    do MailService(String<Email>)
+EndFunction
+[END]
